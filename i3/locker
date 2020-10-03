@@ -1,0 +1,46 @@
+#!/bin/sh
+
+image=$(mktemp --suffix=.jpg)
+maim ${image}
+
+convert ${image} \
+    -fill black -colorize 70% \
+    -filter Gaussian -blur 0x8 \
+    ${image}
+
+defaultcolor=ffffff
+verifyingcolor=ffffff
+wrongcolor=ff0000
+textcolor=ffffff
+
+i3lock \
+-i "${image}" \
+-k --force-clock \
+--indicator \
+--ignore-empty-password \
+--pass-media-keys \
+--pass-screen-keys \
+--pass-power-keys \
+--pass-volume-keys \
+--timestr="%H:%M:%S" \
+--timecolor=${textcolor} \
+--timepos="x+(w/2):y+(h/2)" \
+--datestr="%d . %m . %Y" \
+--datecolor=${textcolor} \
+--datesize=20 \
+--radius=20 \
+--indpos="x+(w/2):h*9/10" \
+--ringcolor=${defaultcolor}aa \
+--insidecolor=${defaultcolor}22 \
+--ring-width=4 \
+--linecolor=${defaultcolor}ff \
+--line-uses-inside \
+--ringvercolor=${verifyingcolor}  \
+--insidevercolor=${verifyingcolor}88 \
+--veriftext="" \
+--ringwrongcolor=${wrongcolor}88 \
+--insidewrongcolor=${wrongcolor} \
+--wrongtext="" \
+--wrongcolor=${textcolor}
+
+rm ${image}
